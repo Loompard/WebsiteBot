@@ -36,3 +36,5 @@ const bot = new Discord.Client({
 bot.on("ready", () => {
     console.log(`${bot.user.tag} started`)
 })
+
+bot.login(process.env.token)
