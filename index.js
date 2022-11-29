@@ -37,4 +37,10 @@ bot.on("ready", () => {
     console.log(`${bot.user.tag} started`)
 })
 
+bot.on("messageCreate", (message) => {
+    if(message.author.bot) return
+    if(message.content.startsWith("!test")) message.reply("Статус **Render**: Активен")
+    else return
+})
+
 bot.login(process.env.token)
