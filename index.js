@@ -106,18 +106,24 @@ const rest = new Discord.REST().setToken(process.env.token);
 (async () => {
 	try {
 		console.log(`Refreshing slash commands...`)
-		let commandsArray = []
+		let guildCommandsArray = new Array()
+        let globalCommandsArray = new Array()
 		const slashes = fs.readdirSync("./slashcmds").filter(file => file.endsWith('.js'))
 		for (const file of slashes) {
 			const cmdsave = require(`./slashcmds/${file}`)
-			commandsArray.push(cmdsave.data.toJSON())
+            if(cmdsave.type == "global") globalCommandsArray.push(cmdsave.data.toJSON())
+			else guildCommandsArray.push(cmdsave.data.toJSON())
 		}
-		console.log(`Found ${commandsArray.length} application slash commands`)
-		const data = await rest.put(
+		console.log(`Found ${guildCommandsArray.length + globalCommandsArray.length} application slash commands`)
+		const guildCmds = await rest.put(
 			Discord.Routes.applicationGuildCommands("447394216474050560", "394404781164068867"),
-			{ body: commandsArray }
+			{ body: guildCommandsArray }
 		)
-		console.log(`Successfully reloaded ${data.length} application slash commands`)
+        const globalCmds = await rest.put(
+            Discord.Routes.applicationCommands("447394216474050560"),
+            { body: globalCommandsArray }
+        )
+		console.log(`Successfully reloaded ${guildCmds.length + globalCmds.length} application slash commands`)
 	} catch (error) {
 		console.log(error)
 	}

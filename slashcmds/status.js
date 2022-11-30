@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require(`discord.js`)
 
 module.exports = {
+	type: "global",
 	data: new SlashCommandBuilder()
 		.setName("status")
 		.setDescription("Показывает статус бота"),
