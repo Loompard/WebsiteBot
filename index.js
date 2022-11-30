@@ -12,19 +12,19 @@ app.listen(3000, () => {
     console.log("Website started")
 })
 
-async function database() {
-    /*const db = await dbpool.connect()
-    let result = await db.query("INSERT INTO test VALUES ('aboba')")
-    console.log(result)*/
-}
-
-
 const dbpool = new pg.Pool({
     connectionString: process.env.dbtoken,
     ssl: {
         rejectUnauthorized: false
     }
 })
+
+async function database() {
+    /*const db = await dbpool.connect()
+    let result = await db.query("INSERT INTO test VALUES ('aboba')")
+    console.log(result)*/
+}
+
 
 // Discord Bot Place
 const bot = new Discord.Client({
@@ -54,6 +54,14 @@ bot.commands = new Discord.Collection()
 
 bot.on("ready", () => {
     console.log(`${bot.user.tag} started`)
+	const startDate = new Date()
+	setInterval(() => {
+		let utc = startDate.getTime() + (startDate.getTimezoneOffset() * 60000)
+		let status = new Date(utc + (3600000 * 2))
+		bot.user.setActivity({
+			name: `Активна с ${status.toLocaleString()}`
+		})
+	}, 3*60000)
     database()
 })
 
