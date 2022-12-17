@@ -1,4 +1,3 @@
-const pg = require(`pg`)
 const fs = require(`fs`)
 const Discord = require(`discord.js`)
 const express = require(`express`)
@@ -11,20 +10,6 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
     console.log("Website started")
 })
-
-const dbpool = new pg.Pool({
-    connectionString: process.env.dbtoken,
-    ssl: {
-        rejectUnauthorized: false
-    }
-})
-
-async function database() {
-    /*const db = await dbpool.connect()
-    let result = await db.query("INSERT INTO test VALUES ('aboba')")
-    console.log(result)*/
-}
-
 
 // Discord Bot Place
 const bot = new Discord.Client({
@@ -62,7 +47,6 @@ bot.on("ready", () => {
 			name: `Активна с ${status.toLocaleString()}`
 		})
 	}, 3*60000)
-    database()
 })
 
 bot.on("guildScheduledEventCreate", async (event) => {
